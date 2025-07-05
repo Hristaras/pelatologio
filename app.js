@@ -10,17 +10,40 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-const wordInput = document.getElementById("wordInput");
-const wordList = document.getElementById("wordList");
+const firstName = document.getElementById("firstName");
+const lastName = document.getElementById("lastName");
+const debt = document.getElementById("debt");
+const phone = document.getElementById("phone");
+const clientList = document.getElementById("clientList");
 
-function addWord() {
-  const word = wordInput.value.trim();
-  if (word) {
-    db.collection("words").add({ text: word }).then(() => {
-      wordInput.value = "";
+function addClient() {
+  const client = {
+    firstName: firstName.value.trim(),
+    lastName: lastName.value.trim(),
+    debt: parseFloat(debt.value),
+    phone: phone.value.trim()
+  };
+
+  if (client.firstName && client.lastName && !isNaN(client.debt) && client.phone) {
+    db.collection("clients").add(client).then(() => {
+      firstName.value = "";
+      lastName.value = "";
+      debt.value = "";
+      phone.value = "";
     });
   }
 }
+
+db.collection("clients").onSnapshot((snapshot) => {
+  clientList.innerHTML = "";
+  snapshot.forEach((doc) => {
+    const data = doc.data();
+    const li = document.createElement("li");
+    li.textContent = `${data.firstName} ${data.lastName} - Χρωστάει €${data.debt.toFixed(2)} - Τηλ: ${data.phone}`;
+    clientList.appendChild(li);
+  });
+});
+
 
 db.collection("words").onSnapshot((snapshot) => {
   wordList.innerHTML = "";
