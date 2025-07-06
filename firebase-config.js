@@ -6,6 +6,6 @@ const firebaseConfig = {
   storageBucket: "pelatologio2.firebasestorage.app",
   messagingSenderId: "463233168409",
   appId: "1:463233168409:web:adf751fba0851e23042688"
-
+};
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
