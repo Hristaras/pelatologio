@@ -1,9 +1,9 @@
 function addClient() {
   const client = {
-    firstName: firstName.value.trim(),
-    lastName: lastName.value.trim(),
-    debt: parseFloat(debt.value),
-    phone: phone.value.trim()
+    firstName: document.getElementById("firstName").value.trim(),
+    lastName: document.getElementById("lastName").value.trim(),
+    debt: parseFloat(document.getElementById("debt").value),
+    phone: document.getElementById("phone").value.trim()
   };
 
 function deleteClient(id) {
