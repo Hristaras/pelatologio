@@ -1,10 +1,23 @@
 function addClient() {
-  const client = {
-    firstName: document.getElementById("firstName").value.trim(),
-    lastName: document.getElementById("lastName").value.trim(),
-    debt: parseFloat(document.getElementById("debt").value),
-    phone: document.getElementById("phone").value.trim()
-  };
+  const firstName = document.getElementById('firstName').value;
+  const lastName = document.getElementById('lastName').value;
+  const debt = parseFloat(document.getElementById('debt').value);
+  const phone = document.getElementById('phone').value;
+
+  db.collection("clients").add({
+    firstName,
+    lastName,
+    debt,
+    phone
+  })
+  .then(() => {
+    alert("Ο πελάτης καταχωρήθηκε!");
+    location.reload();
+  })
+  .catch((error) => {
+    console.error("Σφάλμα στην καταχώριση:", error);
+  });
+}
 
 function deleteClient(id) {
   const confirmDelete = confirm("Θέλεις σίγουρα να διαγράψεις αυτόν τον πελάτη;");
