@@ -19,6 +19,17 @@
   <h2>Λίστα Πελατών:</h2>
   <ul id="clientList"></ul>
 
+  <!-- Φόρμα επεξεργασίας -->
+  <div id="editForm" style="display:none">
+    <h3>Επεξεργασία Πελάτη</h3>
+    <input type="text" id="editFirstName" placeholder="Όνομα">
+    <input type="text" id="editLastName" placeholder="Επίθετο">
+    <input type="number" id="editDebt" placeholder="Χρωστούμενα €">
+    <input type="text" id="editPhone" placeholder="Τηλέφωνο">
+    <button onclick="saveEdit()">Αποθήκευση</button>
+    <button onclick="cancelEdit()">Άκυρο</button>
+  </div>
+
   <script src="firebase-config.js"></script>
   <script src="main.js"></script>
 </body>
