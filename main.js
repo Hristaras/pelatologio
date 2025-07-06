@@ -29,3 +29,6 @@ db.collection("clients").onSnapshot(snapshot => {
     clientList.appendChild(li);
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("submitBtn").addEventListener("click", addClient);
