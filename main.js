@@ -30,5 +30,3 @@ db.collection("clients").onSnapshot(snapshot => {
   });
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("submitBtn").addEventListener("click", addClient);
