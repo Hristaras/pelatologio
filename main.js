@@ -1,3 +1,11 @@
+function addClient() {
+  const client = {
+    firstName: firstName.value.trim(),
+    lastName: lastName.value.trim(),
+    debt: parseFloat(debt.value),
+    phone: phone.value.trim()
+  };
+
 function deleteClient(id) {
   const confirmDelete = confirm("Θέλεις σίγουρα να διαγράψεις αυτόν τον πελάτη;");
   if (confirmDelete) {
