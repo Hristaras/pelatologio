@@ -1,11 +1,11 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyBQD6HW1wWf-5pJITQgJMRbvcRKdpCSm_c",
-  authDomain: "pelatologio2.firebaseapp.com",
-  databaseURL: "https://pelatologio2-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "pelatologio2",
-  storageBucket: "pelatologio2.firebasestorage.app",
-  messagingSenderId: "463233168409",
-  appId: "1:463233168409:web:adf751fba0851e23042688"
+  apiKey: "AIzaSyAqe4HFF63ONdXsG7iMPCqFMG5IY8C19qw",
+  authDomain: "pelatologio-864f4.firebaseapp.com",
+  databaseURL: "https://pelatologio-864f4-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "pelatologio-864f4",
+  storageBucket: "pelatologio-864f4.firebasestorage.app",
+  messagingSenderId: "1082547737442",
+  appId: "1:1082547737442:web:6a7a30bd3f8185c814d23b"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
