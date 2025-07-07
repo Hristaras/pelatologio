@@ -6,6 +6,10 @@ body {
   margin: 0;
   padding: 20px;
   color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
 }
 
 h1 {
@@ -18,8 +22,8 @@ h1 {
 form {
   display: flex;
   flex-direction: column;
+  width: 100%;
   max-width: 500px;
-  margin: 0 auto 30px;
   padding: 20px;
   background-color: #ffffff;
   border-radius: 12px;
@@ -55,6 +59,7 @@ ul#clientList {
   list-style: none;
   padding: 0;
   max-width: 600px;
+  width: 100%;
   margin: 0 auto;
   animation: fadeInUp 1s ease-out;
 }
@@ -90,6 +95,7 @@ ul#clientList li:hover {
 #editForm {
   display: none;
   max-width: 500px;
+  width: 100%;
   margin: 30px auto;
   padding: 20px;
   border: 2px dashed #00796b;
@@ -105,4 +111,3 @@ ul#clientList li:hover {
 #editForm button {
   margin-right: 10px;
 }
-
