@@ -1,51 +1,57 @@
+const provider = new firebase.auth.GoogleAuthProvider();
 
-const db = firebase.database().ref("clients");
+function signInWithGoogle() {
+  firebase.auth().signInWithPopup(provider)
+    .then((result) => {
+      const user = result.user;
+      document.getElementById("userInfo").innerText = "Συνδέθηκες ως: " + user.displayName;
+      loadClients(user.uid);
+    })
+    .catch(console.error);
+}
 
-function addClient() {
-  const firstName = document.getElementById("firstName").value;
-  const lastName = document.getElementById("lastName").value;
+function signOut() {
+  firebase.auth().signOut().then(() => {
+    document.getElementById("userInfo").innerText = "Αποσυνδέθηκες";
+    document.getElementById("clientList").innerHTML = "";
+  });
+}
+
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    document.getElementById("userInfo").innerText = "Καλωσήρθες " + user.displayName;
+    loadClients(user.uid);
+  }
+});
+
+document.getElementById("clientForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const user = firebase.auth().currentUser;
+  if (!user) return alert("Πρέπει να συνδεθείς πρώτα!");
+
+  const name = document.getElementById("name").value;
+  const surname = document.getElementById("surname").value;
   const debt = document.getElementById("debt").value;
   const phone = document.getElementById("phone").value;
 
-  db.push({
-    firstName,
-    lastName,
-    debt,
-    phone
+  firebase.database().ref("clients/" + user.uid).push({
+    name, surname, debt, phone
   });
 
-  clearInputs();
-}
+  this.reset();
+});
 
-function clearInputs() {
-  document.getElementById("firstName").value = "";
-  document.getElementById("lastName").value = "";
-  document.getElementById("debt").value = "";
-  document.getElementById("phone").value = "";
-}
-
-function loadClients() {
+function loadClients(uid) {
   const list = document.getElementById("clientList");
-  db.on("value", (snapshot) => {
+  list.innerHTML = "";
+  firebase.database().ref("clients/" + uid).on("value", snapshot => {
+    const data = snapshot.val();
     list.innerHTML = "";
-    snapshot.forEach((child) => {
-      const client = child.val();
+    for (let id in data) {
+      const client = data[id];
       const li = document.createElement("li");
-      li.innerHTML = `
-        <strong>${client.firstName} ${client.lastName}</strong><br />
-        Χρωστάει: €${client.debt} | Τηλέφωνο: ${client.phone}
-        <br />
-        <button onclick="confirmDelete('${child.key}')">Διαγραφή</button>
-      `;
+      li.textContent = `${client.name} ${client.surname} - ${client.debt}€ - ${client.phone}`;
       list.appendChild(li);
-    });
+    }
   });
 }
-
-function confirmDelete(id) {
-  if (confirm("Θέλεις σίγουρα να διαγράψεις αυτόν τον πελάτη;")) {
-    db.child(id).remove();
-  }
-}
-
-window.onload = loadClients;
