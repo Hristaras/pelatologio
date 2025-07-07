@@ -1,32 +1,25 @@
+
 <!DOCTYPE html>
 <html lang="el">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Πελατολόγιο</title>
+  <link rel="stylesheet" href="style.css" />
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 </head>
 <body>
-  <div id="auth">
-    <button onclick="signInWithGoogle()">Σύνδεση με Google</button>
+  <h1>Λίστα Πελατών</h1>
+
+  <div class="form">
+    <input type="text" id="firstName" placeholder="Όνομα" />
+    <input type="text" id="lastName" placeholder="Επώνυμο" />
+    <input type="number" id="debt" placeholder="Χρωστούμενα" />
+    <input type="text" id="phone" placeholder="Τηλέφωνο" />
+    <button onclick="addClient()">Καταχώριση</button>
   </div>
 
-  <div id="app" style="display:none;">
-    <h1>Καλωσόρισες!</h1>
-    <button onclick="signOut()">Αποσύνδεση</button>
-
-    <div class="form">
-      <input type="text" id="firstName" placeholder="Όνομα">
-      <input type="text" id="lastName" placeholder="Επώνυμο">
-      <input type="number" id="debt" placeholder="Χρωστούμενα">
-      <input type="text" id="phone" placeholder="Τηλέφωνο">
-      <button onclick="addClient()">Καταχώριση</button>
-    </div>
-
-    <ul id="clientList"></ul>
-  </div>
+  <ul id="clientList"></ul>
 
   <script src="firebase-config.js"></script>
   <script src="main.js"></script>
