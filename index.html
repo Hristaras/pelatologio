@@ -1,32 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="el">
 <head>
   <meta charset="UTF-8">
   <title>Πελατολόγιο</title>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Καταχώριση Πελάτη</h1>
+  <div id="auth">
+    <button onclick="signInWithGoogle()">Σύνδεση με Google</button>
+  </div>
 
-  <input type="text" id="firstName" placeholder="Όνομα">
-  <input type="text" id="lastName" placeholder="Επίθετο">
-  <input type="number" id="debt" placeholder="Χρωστούμενα €">
-  <input type="text" id="phone" placeholder="Τηλέφωνο">
-  <button onclick="addClient()">Καταχώρισε</button>
+  <div id="app" style="display:none;">
+    <h1>Καλωσόρισες!</h1>
+    <button onclick="signOut()">Αποσύνδεση</button>
 
-  <h2>Λίστα Πελατών:</h2>
-  <ul id="clientList"></ul>
+    <div class="form">
+      <input type="text" id="firstName" placeholder="Όνομα">
+      <input type="text" id="lastName" placeholder="Επώνυμο">
+      <input type="number" id="debt" placeholder="Χρωστούμενα">
+      <input type="text" id="phone" placeholder="Τηλέφωνο">
+      <button onclick="addClient()">Καταχώριση</button>
+    </div>
 
-  <div id="editForm" style="display:none">
-    <h3>Επεξεργασία Πελάτη</h3>
-    <input type="text" id="editFirstName" placeholder="Όνομα">
-    <input type="text" id="editLastName" placeholder="Επίθετο">
-    <input type="number" id="editDebt" placeholder="Χρωστούμενα €">
-    <input type="text" id="editPhone" placeholder="Τηλέφωνο">
-    <button onclick="saveEdit()">Αποθήκευση</button>
-    <button onclick="cancelEdit()">Άκυρο</button>
+    <ul id="clientList"></ul>
   </div>
 
   <script src="firebase-config.js"></script>
