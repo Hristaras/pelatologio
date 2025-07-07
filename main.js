@@ -1,57 +1,95 @@
-const provider = new firebase.auth.GoogleAuthProvider();
 
-function signInWithGoogle() {
-  firebase.auth().signInWithPopup(provider)
-    .then((result) => {
-      const user = result.user;
-      document.getElementById("userInfo").innerText = "Συνδέθηκες ως: " + user.displayName;
-      loadClients(user.uid);
-    })
-    .catch(console.error);
-}
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
 
-function signOut() {
-  firebase.auth().signOut().then(() => {
-    document.getElementById("userInfo").innerText = "Αποσυνδέθηκες";
-    document.getElementById("clientList").innerHTML = "";
-  });
-}
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
 
-firebase.auth().onAuthStateChanged((user) => {
+let currentUser = null;
+let editKey = null;
+
+document.getElementById('loginBtn').addEventListener('click', () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider);
+});
+
+auth.onAuthStateChanged(user => {
   if (user) {
-    document.getElementById("userInfo").innerText = "Καλωσήρθες " + user.displayName;
-    loadClients(user.uid);
+    currentUser = user;
+    document.getElementById('clientForm').style.display = 'block';
+    document.getElementById('logoutBtn').style.display = 'inline-block';
+    document.getElementById('loginBtn').style.display = 'none';
+    loadClients();
+  } else {
+    currentUser = null;
+    document.getElementById('clientForm').style.display = 'none';
+    document.getElementById('logoutBtn').style.display = 'none';
+    document.getElementById('loginBtn').style.display = 'inline-block';
+    document.getElementById('clientList').innerHTML = '';
   }
 });
 
-document.getElementById("clientForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-  const user = firebase.auth().currentUser;
-  if (!user) return alert("Πρέπει να συνδεθείς πρώτα!");
-
-  const name = document.getElementById("name").value;
-  const surname = document.getElementById("surname").value;
-  const debt = document.getElementById("debt").value;
-  const phone = document.getElementById("phone").value;
-
-  firebase.database().ref("clients/" + user.uid).push({
-    name, surname, debt, phone
-  });
-
-  this.reset();
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  auth.signOut();
 });
 
-function loadClients(uid) {
-  const list = document.getElementById("clientList");
-  list.innerHTML = "";
-  firebase.database().ref("clients/" + uid).on("value", snapshot => {
-    const data = snapshot.val();
-    list.innerHTML = "";
-    for (let id in data) {
-      const client = data[id];
-      const li = document.createElement("li");
-      li.textContent = `${client.name} ${client.surname} - ${client.debt}€ - ${client.phone}`;
+document.getElementById('clientForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target));
+  db.ref('clients/' + currentUser.uid).push(data);
+  e.target.reset();
+});
+
+document.getElementById('editForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target));
+  db.ref('clients/' + currentUser.uid + '/' + editKey).set(data);
+  document.getElementById('editForm').style.display = 'none';
+  e.target.reset();
+});
+
+document.getElementById('cancelEdit').addEventListener('click', () => {
+  document.getElementById('editForm').style.display = 'none';
+});
+
+function loadClients() {
+  db.ref('clients/' + currentUser.uid).on('value', snapshot => {
+    const list = document.getElementById('clientList');
+    list.innerHTML = '';
+    snapshot.forEach(child => {
+      const data = child.val();
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <div><strong>${data.name} ${data.surname}</strong> - Οφειλή: ${data.debt}€ - Τηλ: ${data.phone}</div>
+        <div class="client-actions">
+          <button onclick="editClient('${child.key}', ${JSON.stringify(data).replace(/"/g, '&quot;')})">✏️</button>
+          <button onclick="deleteClient('${child.key}')">🗑️</button>
+        </div>`;
       list.appendChild(li);
-    }
+    });
   });
+}
+
+function editClient(key, data) {
+  editKey = key;
+  const form = document.getElementById('editForm');
+  form.name.value = data.name;
+  form.surname.value = data.surname;
+  form.debt.value = data.debt;
+  form.phone.value = data.phone;
+  form.style.display = 'block';
+}
+
+function deleteClient(key) {
+  if (confirm('Είστε σίγουροι ότι θέλετε να διαγράψετε τον πελάτη;')) {
+    db.ref('clients/' + currentUser.uid + '/' + key).remove();
+  }
 }

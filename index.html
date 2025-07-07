@@ -2,7 +2,8 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8" />
-  <title>Πελατολόγιο</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Πελατολόγιο με Google Σύνδεση</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -10,24 +11,28 @@
 </head>
 <body>
   <h1>Πελατολόγιο</h1>
+  <button id="loginBtn">Σύνδεση με Google</button>
+  <button id="logoutBtn" style="display:none;">Αποσύνδεση</button>
 
-  <div id="auth">
-    <button onclick="signInWithGoogle()">Σύνδεση με Google</button>
-    <button onclick="signOut()">Αποσύνδεση</button>
-    <p id="userInfo"></p>
-  </div>
-
-  <form id="clientForm">
-    <input type="text" id="name" placeholder="Όνομα" required />
-    <input type="text" id="surname" placeholder="Επίθετο" required />
-    <input type="number" id="debt" placeholder="Χρωστούμενα" required />
-    <input type="text" id="phone" placeholder="Τηλέφωνο" required />
+  <form id="clientForm" style="display:none;">
+    <input type="text" name="name" placeholder="Όνομα" required />
+    <input type="text" name="surname" placeholder="Επώνυμο" required />
+    <input type="number" name="debt" placeholder="Οφειλή (€)" required />
+    <input type="tel" name="phone" placeholder="Τηλέφωνο" required />
     <button type="submit">Καταχώριση</button>
+  </form>
+
+  <form id="editForm" style="display:none;">
+    <input type="text" name="name" placeholder="Όνομα" required />
+    <input type="text" name="surname" placeholder="Επώνυμο" required />
+    <input type="number" name="debt" placeholder="Οφειλή (€)" required />
+    <input type="tel" name="phone" placeholder="Τηλέφωνο" required />
+    <button type="submit">Αποθήκευση</button>
+    <button type="button" id="cancelEdit">Άκυρο</button>
   </form>
 
   <ul id="clientList"></ul>
 
-  <script src="firebase-config.js"></script>
   <script src="main.js"></script>
 </body>
 </html>
